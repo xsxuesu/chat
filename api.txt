@@ -1,0 +1,69 @@
+[1 1 0 0 0 1 0 0 255 172 10 120 12 152 116 229 173 71 3 1 83 220 14 138]
+[1]
+[1 0 0 0]
+[1 0]
+[0]
+
+key= T713/rYYgW7g4m3vG6zGRh7+FM1t0T8j13koXScOAj4=
+base64(md5()  [1 1 0 0 0 1 0 0 ])
+
+
+switch {
+	case msg.Pub != nil:　　ｐｕｂｌｉｓｈ
+		handler = checkVers(msg, checkUser(msg, s.publish))
+		msg.id = msg.Pub.Id
+		msg.topic = msg.Pub.Topic
+		uaRefresh = true
+
+	case msg.Sub != nil:　　ｓｕｂｓｃｒｉｂｅ
+		handler = checkVers(msg, checkUser(msg, s.subscribe))
+		msg.id = msg.Sub.Id
+		msg.topic = msg.Sub.Topic
+		uaRefresh = true
+
+	case msg.Leave != nil:　　ｌｅａｖｅ
+		handler = checkVers(msg, checkUser(msg, s.leave))
+		msg.id = msg.Leave.Id
+		msg.topic = msg.Leave.Topic
+
+	case msg.Hi != nil:　　　　　ｈｉ
+		handler = s.hello
+		msg.id = msg.Hi.Id
+
+	case msg.Login != nil:　　　　ｌｏｇｉｎ
+		handler = checkVers(msg, s.login)
+		msg.id = msg.Login.Id
+
+	case msg.Get != nil:　　　　　Ｇｅｔ
+		handler = checkVers(msg, checkUser(msg, s.get))
+		msg.id = msg.Get.Id
+		msg.topic = msg.Get.Topic
+		uaRefresh = true
+
+	case msg.Set != nil:　　　　　ＳＥＴ
+		handler = checkVers(msg, checkUser(msg, s.set))
+		msg.id = msg.Set.Id
+		msg.topic = msg.Set.Topic
+		uaRefresh = true
+
+	case msg.Del != nil:　　　　　ｄｅｌｅｔｅ
+		handler = checkVers(msg, checkUser(msg, s.del))
+		msg.id = msg.Del.Id
+		msg.topic = msg.Del.Topic
+
+	case msg.Acc != nil:　　　　　ａｃｃ
+		handler = checkVers(msg, s.acc)
+		msg.id = msg.Acc.Id
+
+	case msg.Note != nil:　　　　　　
+		handler = s.note
+		msg.topic = msg.Note.Topic
+		uaRefresh = true
+
+	default:
+		// Unknown message
+		s.queueOut(ErrMalformed("", "", msg.timestamp))
+		log.Println("s.dispatch: unknown message", s.sid)
+		return
+	}
+
