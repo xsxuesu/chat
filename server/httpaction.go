@@ -77,9 +77,9 @@ func RegisterUser(wrt http.ResponseWriter, r *http.Request) {
 		info.Success = false
 		info.Info = err.Error()
 	}else{
-		if jUser.Username == "" || jUser.Password == "" {
+		if jUser.Username == "" || jUser.Password == "" || jUser.NickName == "" {
 			info.Success = false
-			info.Info = "username and password can't empty"
+			info.Info = "username , password and nickname can't empty"
 		}
 	}
 
@@ -131,9 +131,11 @@ func ChangePassword(wrt http.ResponseWriter, r *http.Request) {
 func ReturnW(wrt http.ResponseWriter,info ReturnInfo)  {
 	wrt.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	if info.Success==true{
-		wrt.WriteHeader(http.StatusCreated)
+		wrt.WriteHeader(http.StatusOK)
 	}else{
-		wrt.WriteHeader(422) // unprocessable entity
+
+		fmt.Println("info.Info:",info.Info)
+		wrt.WriteHeader(http.StatusAlreadyReported) // unprocessable entity
 	}
 
 	body , _ := json.Marshal(info)

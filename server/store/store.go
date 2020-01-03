@@ -240,7 +240,6 @@ func (UsersObjMapper) Create(user *types.User, private interface{}) (*types.User
 func (UsersObjMapper) GetAuthRecord(user types.Uid, scheme string) (string, auth.Level, []byte, time.Time, error) {
 	unique, authLvl, secret, expires, err := adp.AuthGetRecord(user, scheme)
 	if err == nil {
-		fmt.Println("unique:",unique)
 		parts := strings.Split(unique, ":")
 		unique = parts[1]
 	}
