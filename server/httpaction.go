@@ -46,6 +46,7 @@ type JUser struct {
 	Username    string      `json:"username"`
 	Password    string      `json:"password"`
 	Picture     string		`json:"picture"`
+	NickName    string      `json:"nickname"`
 }
 
 type ChgPwd struct {
@@ -170,7 +171,7 @@ func RegisterToDb(jUser JUser) (string,error) {
 			Auth: types.ModeCAuth,
 			Anon: types.ModeNone,
 		},
-		Public: &vCardy{Fn:jUser.Username},
+		Public: &vCardy{Fn:jUser.NickName},
 	}
 
 	user.CreatedAt = getCreatedTime("-1h")
