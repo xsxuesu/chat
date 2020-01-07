@@ -923,6 +923,7 @@ func (s *Session) del(msg *ClientComMessage) {
 			s.queueOut(ErrClusterUnreachable(msg.id, msg.topic, msg.timestamp))
 		}
 	} else if what == constMsgDelTopic {
+		//
 		// Deleting topic: for sessions attached or not attached, send request to hub first.
 		// Hub will forward to topic, if appropriate.
 		globals.hub.unreg <- &topicUnreg{

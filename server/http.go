@@ -132,7 +132,7 @@ func signalHandler() <-chan bool {
 	stop := make(chan bool)
 
 	signchan := make(chan os.Signal, 1)
-	signal.Notify(signchan, syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
+	signal.Notify(signchan,os.Interrupt ,syscall.SIGINT, syscall.SIGTERM)
 
 	go func() {
 		// Wait for a signal. Don't care which signal it is

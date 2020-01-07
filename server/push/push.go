@@ -4,6 +4,10 @@ package push
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+	"strings"
 	"time"
 
 	t "github.com/tinode/chat/server/store/types"
@@ -131,4 +135,28 @@ func Stop() {
 			hnd.Stop()
 		}
 	}
+}
+
+func CallNotification(msg *Receipt){
+
+	msgjson,err  := json.Marshal(msg)
+	if err != nil {
+		fmt.Println(err)
+	}
+	/// post java push notification url
+	resp, err := http.Post("http://www.01happy.com/demo/accept.php",
+		"application/x-www-form-urlencoded",
+		strings.NewReader(fmt.Sprintf("msg=%s",msgjson)))
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(string(body))
 }

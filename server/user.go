@@ -897,20 +897,20 @@ func userUpdater() {
 		}
 
 		// Request to send push notifications.
-		//////==================Custom send notifications
-		//if upd.PushRcpt != nil {
-		//	for uid, rcptTo := range upd.PushRcpt.To {
-		//		// Handle update
-		//		unread := unreadUpdater(uid, 1, true)
-		//		if unread >= 0 {
-		//			rcptTo.Unread = unread
-		//			upd.PushRcpt.To[uid] = rcptTo
-		//		}
-		//	}
-		//
-		//	push.Push(upd.PushRcpt)
-		//	continue
-		//}
+
+		if upd.PushRcpt != nil {
+			for uid, rcptTo := range upd.PushRcpt.To {
+				// Handle update
+				unread := unreadUpdater(uid, 1, true)
+				if unread >= 0 {
+					rcptTo.Unread = unread
+					upd.PushRcpt.To[uid] = rcptTo
+				}
+			}
+			//////==================Remove send notifications
+			//push.Push(upd.PushRcpt)
+			continue
+		}
 
 		// Request to add/remove user from cache.
 		if len(upd.UserIdList) > 0 {
